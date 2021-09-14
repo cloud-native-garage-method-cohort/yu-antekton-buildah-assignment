@@ -11,6 +11,8 @@ spec:
       value: https://github.com/cloud-native-garage-method-cohort/yu-antekton-buildah-assignment
     - name: image-repo
       value: quay.io/anyu_ibm/express-sample-app
+    - name: app-name
+      value: yu-an-express-sample-app
   workspaces:
     - name: pipeline-shared-data  
       volumeClaimTemplate:

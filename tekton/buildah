@@ -10,6 +10,9 @@ spec:
     - name: image-repo
       type: string
       description: Docker image repository
+    - name: app-name
+      type: string
+      description: app name
   workspaces:
     - name: pipeline-shared-data
   tasks:
@@ -34,5 +37,25 @@ spec:
           value: "$(params.image-repo):$(tasks.clone-repository.results.commit)"
       workspaces:
         - name: source
+          workspace: pipeline-shared-data          
+    - name: create-environment-config
+      runAfter:
+        - build-and-push-image
+      taskRef:
+        name: kustomize
+      params:
+        - name: app-name
+          value: "$(params.app-name)"
+        - name: app-namespace
+          value: "$(context.pipelineRun.namespace)"
+        - name: source-repo
+          value: "$(params.source-repo)"
+        - name: commit
+          value: "$(tasks.clone-repository.results.commit)"
+        - name: image-repo
+          value: "$(params.image-repo)"
+      workspaces:
+        - name: source
           workspace: pipeline-shared-data
+    
 
