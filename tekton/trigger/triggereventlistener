@@ -9,3 +9,4 @@ spec:
         - ref: vcs-trigger
       template:
         name: vcs-trigger
+        
