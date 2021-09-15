@@ -1,11 +1,11 @@
-apiVersion: triggers.tekton.dev/v1alpha1
-kind: EventListener
+apiVersion: route.openshift.io/v1
+kind: Route
 metadata:
   name: vcs-trigger
 spec:
-  serviceAccountName: vcs-trigger
-  triggers:
-    - bindings:
-        - ref: vcs-trigger
-      template:
-        name: vcs-trigger
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: el-vcs-trigger
+    weight: 100
