@@ -1,0 +1,30 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: vcs-trigger
+spec:
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: express-sample-app-pipeline-
+      spec:
+        pipelineRef:
+          name: nodejs-pipeline
+        serviceAccountName: build-bot
+        params:
+          - name: app-name
+            value: express-sample-app
+          - name: source-repo
+            value: https://github.com/cloud-native-garage-method-cohort/yu-antekton-buildah-assignment
+          - name: image-repo
+            value: quay.io/anyu_ibm/express-sample-app
+        workspaces:
+          - name: pipeline-shared-data
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 1Gi
